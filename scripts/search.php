@@ -9,8 +9,9 @@ function callAPI($url) {
 }
 
 function search($query) {
+
     $url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
-    $url .= $query;
+    $url .= urlencode($query);
 
     $json = callAPI($url);
     return $json["drinks"];
