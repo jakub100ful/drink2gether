@@ -42,6 +42,7 @@ $search_return_list = search($_GET["search-query"]);
         <div class="row">
 
         <?php
+            $index = 0;
             foreach ($search_return_list as $drink){
                 $image_url = $drink["strDrinkThumb"];
                 $card_html = "
@@ -54,7 +55,9 @@ $search_return_list = search($_GET["search-query"]);
                         <div class='col-8'>
                             <h5 class='card-title'>".$drink["strDrink"]."</h5>
                             <p class='card-text'><b>Type: </b>".$drink["strAlcoholic"]."</p>
-                            <a href='#' class='btn btn-primary'>Add</a>
+                            <button id='".$index."' type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#drink-modal'>
+                             Add
+                            </button>
                             <a href='#' class='btn btn-primary'>Save</a>
                             </div>
                         </div>
@@ -62,14 +65,62 @@ $search_return_list = search($_GET["search-query"]);
                 </div>
                 ";
                 echo $card_html;
+                ++$index;
             }
         ?>
+        </div>
+
+        <div class="modal" tabindex="-1" id="drink-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
+    <script>
+        let searchReturnList = <?php echo json_encode($search_return_list); ?>;
+        let drinkModal = document.getElementById('drink-modal');
+
+        drinkModal.addEventListener('show.bs.modal', function (event) {
+            console.log(searchReturnList);
+            let id = event.relatedTarget.id;
+
+            let data = searchReturnList[id];
+            let modalTitle = drinkModal.querySelector('.modal-title');
+            let modalBody = drinkModal.querySelector('.modal-body p');
+
+
+            modalTitle.textContent = data['strDrink'];
+
+            let ingredientList = [];
+
+            for (let i = 1; i < 17; i++) {
+                if (data['strIngredient'+i]){
+                    ingredientList.push([data['strIngredient'+i], data['strMeasure'+i]]);
+                }else {
+                    break;
+                }
+            }
+
+            modalBody.innerHTML = ingredientList;
+        })
+    </script>
 </body>
 
 </html>
