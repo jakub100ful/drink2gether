@@ -1,6 +1,5 @@
 <?php
-
-namespace DevCoder;
+namespace App;
 
 class DotEnv
 {

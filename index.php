@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -12,6 +16,15 @@
 <body>
 
     <div class="container-fluid" id="main-container">
+        <div class="row justify-content-center align-items-center h-10" id="search-row">
+            <?php
+                if (isset($_SESSION['user'])) {
+                    echo("<p>Logged in as ".$_SESSION['user']."</p>");
+                }else{
+                    echo("<a class='text-white' href='login.php'>Log in</a>");
+                }
+            ?>
+        </div>
         <div class="row justify-content-center align-items-center h-100" id="search-row">
         <div class="col-sm-3">
         <h1 class="logo text-focus-in">

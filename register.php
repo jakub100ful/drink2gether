@@ -14,12 +14,16 @@
                         drink2gether<span><i class="bi bi-cup-straw"></i></span>
                     </h1>
                     <div class="card slide-top">
-                        <h5 class="card-header">Log In</h5>
+                        <h5 class="card-header">Register</h5>
                         <div class="card-body">
-                            <form action="scripts/login_user.php" method="post">
+                            <form action="./scripts/create_new_user.php" method="post">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Username</label>
-                                    <input name="username" type="text" class="form-control" id="inputUsername" aria-describedby="emailHelp" placeholder="Enter email" />
+                                    <label for="inputUsername">Username</label>
+                                    <input name="username" type="text" class="form-control" id="inputUsername" aria-describedby="usernameHelp" placeholder="Enter username" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail">Email address</label>
+                                    <input name="email" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" />
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPassword">Password</label>

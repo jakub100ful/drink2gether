@@ -1,10 +1,8 @@
 <?php
-use DevCoder\DotEnv;
 
-(new DotEnv(__DIR__ . '../.env'))->load();
+require_once 'DotEnv.php';
 
-echo 
-// mysql:host=localhost;dbname=test;
+(new App\DotEnv('../.env'))->load();
 
 $db_servername = getenv('DATABASE_HOST');
 $db_username = getenv('DATABASE_USER');
@@ -13,7 +11,7 @@ $db_port = getenv('DATABASE_PORT');
 $db_name = getenv('DATABASE_PASSWORD');
 
 // Create connection
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($db_servername, $db_username, $db_password);
 
 // Check connection
 if ($conn->connect_error) {
