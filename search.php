@@ -34,34 +34,35 @@ $search_return_list = search($_GET["search-query"]);
 <body>
 
     <div class="container-fluid p-0" id="navigation-container">
-    <h1 class="logo text-focus-in">
+    <h1 class="logo text-focus-in mt-5">
         drink2gether<span><i class="bi bi-cup-straw"></i></span>
     </h1>
     </div>
     <div class="container-fluid" id="main-container">
-        <div class="row">
 
         <?php
             $index = 0;
             foreach ($search_return_list as $drink){
                 $image_url = $drink["strDrinkThumb"];
                 $card_html = "
-                    <div class='col-sm-6'>
+                <div class='row justify-content-center align-items-center'>
+                    <div class='col-sm-6 mb-3'>
                     <div class='card'>
                         <div class='row card-body'>
-                        <div class='col-4'>
-                            <img class='img-responsive w-100' src='".$image_url."' alt='sans'/>
+                        <div class='col-2'>
+                            <img class='img-responsive w-100 rounded-circle' src='".$image_url."' alt='sans'/>
                         </div>
-                        <div class='col-8'>
+                        <div class='col-10'>
                             <h5 class='card-title'>".$drink["strDrink"]."</h5>
                             <p class='card-text'><b>Type: </b>".$drink["strAlcoholic"]."</p>
-                            <button id='".$index."' type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#drink-modal'>
+                            <button id='".$index."' type='button' class='btn btn-light' data-bs-toggle='modal' data-bs-target='#drink-modal'>
                              Add
                             </button>
-                            <a href='#' class='btn btn-primary'>Save</a>
+                            <a href='#' class='btn btn-light'>Save</a>
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 ";
                 echo $card_html;

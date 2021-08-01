@@ -19,7 +19,7 @@ session_start();
         <div class="row justify-content-center align-items-center h-10" id="search-row">
             <?php
                 if (isset($_SESSION['user'])) {
-                    echo("<p>Logged in as ".$_SESSION['user']."</p>");
+                    echo("<p>Logged in as ".$_SESSION['user'].". <a class='text-white' href='logout.php'>Logout</a></p>");
                 }else{
                     echo("<a class='text-white' href='login.php'>Log in</a>");
                 }
@@ -32,7 +32,7 @@ session_start();
         </h1>
         <div class="row align-items-center h-100" id="search-row">
             <div class="col-lg">
-                <form method="get" action="./scripts/search.php">
+                <form method="get" action="./search.php">
                     <div class="input-group rounded">
                         <input name="search-query" type="search" class="form-control rounded"
                             placeholder="lookup cocktails" aria-label="Search" aria-describedby="search-addon" />
