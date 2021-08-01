@@ -34,9 +34,9 @@ $search_return_list = search($_GET["search-query"]);
 <body>
 
     <div class="container-fluid p-0" id="navigation-container">
-        <nav class="navbar navbar-light bg-light justify-content-between">
-            <a class="navbar-brand">drink2gether</a>
-        </nav>
+    <h1 class="logo text-focus-in">
+        drink2gether<span><i class="bi bi-cup-straw"></i></span>
+    </h1>
     </div>
     <div class="container-fluid" id="main-container">
         <div class="row">
