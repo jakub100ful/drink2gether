@@ -99,3 +99,21 @@ input {
 .text-focus-in {
   animation: text-focus-in 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
 }
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.384);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 1rem;
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}

@@ -1,5 +1,7 @@
 <?php
 
+require_once 'scripts/PriceCheck.php';
+
 function callAPI($url) {
     
     $json_data = file_get_contents($url);
@@ -16,6 +18,10 @@ function search($query) {
     $json = callAPI($url);
     return $json["drinks"];
 }
+
+$vodka = new PriceCheck("vodka");
+$vodka->setProductList();
+var_dump($vodka->getProductList());
 
 $search_return_list = search($_GET["search-query"]);
 ?>
@@ -39,7 +45,12 @@ $search_return_list = search($_GET["search-query"]);
     </h1>
     </div>
     <div class="container-fluid" id="main-container">
-
+        <div class="row justify-content-center align-items-center">
+            <div class="col-sm-6 mb-3">
+                
+                <?php echo("<h4>".count($search_return_list)." results for ".$_GET['search-query']."</h4>"); ?>
+            </div>
+        </div>
         <?php
             $index = 0;
             foreach ($search_return_list as $drink){
@@ -55,10 +66,12 @@ $search_return_list = search($_GET["search-query"]);
                         <div class='col-10'>
                             <h5 class='card-title'>".$drink["strDrink"]."</h5>
                             <p class='card-text'><b>Type: </b>".$drink["strAlcoholic"]."</p>
-                            <button id='".$index."' type='button' class='btn btn-light' data-bs-toggle='modal' data-bs-target='#drink-modal'>
+                            <button id='".$index."' type='button' class='btn-grad mt-2' data-bs-toggle='modal' data-bs-target='#drink-modal'>
                              Add
                             </button>
-                            <a href='#' class='btn btn-light'>Save</a>
+                            <button id='save-".$index."' type='button' class='btn-grad mt-2' data-bs-toggle='modal' data-bs-target='#drink-modal'>
+                             Save
+                            </button>
                             </div>
                         </div>
                     </div>
@@ -75,15 +88,17 @@ $search_return_list = search($_GET["search-query"]);
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+                    <h3 class="modal-title">Modal title</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Modal body text goes here.</p>
+                    <h4>Ingredients</h4>
+                    <div class="w-50" id="ingredients">
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn-grad mt-2" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn-grad mt-2 text-light bg-primary">Add to party</button>
                 </div>
                 </div>
             </div>
@@ -104,7 +119,7 @@ $search_return_list = search($_GET["search-query"]);
 
             let data = searchReturnList[id];
             let modalTitle = drinkModal.querySelector('.modal-title');
-            let modalBody = drinkModal.querySelector('.modal-body p');
+            let modalBody = drinkModal.querySelector('.modal-body #ingredients');
 
 
             modalTitle.textContent = data['strDrink'];
@@ -113,13 +128,29 @@ $search_return_list = search($_GET["search-query"]);
 
             for (let i = 1; i < 17; i++) {
                 if (data['strIngredient'+i]){
+                    console.log("Ingredient: "+data['strIngredient'+i]);
+                    console.log("Measure: "+data['strMeasure'+i]);
                     ingredientList.push([data['strIngredient'+i], data['strMeasure'+i]]);
                 }else {
                     break;
                 }
             }
+            let ingredientHTML = "";
 
-            modalBody.innerHTML = ingredientList;
+            console.log(ingredientList);
+
+            ingredientList.forEach((ingredient) => {
+                ingredientHTML += "<div class='row'>";
+                if(ingredient[1]){
+                    ingredientHTML += "<div class='col'>"+ingredient[1]+"</div>";
+                }else{
+                    ingredientHTML += "<i class='bi bi-record-fill col'></i>";
+                }
+                ingredientHTML += "<div class='col'>"+ingredient[0]+"</div>";
+                ingredientHTML += "</div>";
+            })
+
+            modalBody.innerHTML = ingredientHTML;
         })
     </script>
 </body>
