@@ -1,6 +1,6 @@
 <?php
 
-require_once 'scripts/PriceCheck.php';
+require_once 'scripts/Drink.php';
 
 function callAPI($url) {
     
@@ -19,9 +19,12 @@ function search($query) {
     return $json["drinks"];
 }
 
-$vodka = new PriceCheck("vodka");
-$vodka->setProductList();
-var_dump($vodka->getProductList());
+$mydrink = new Drink("mydrink", [["vodka","50ml"],["whiskey","25ml"]]);
+$ingredients = $mydrink->getIngredientsArray();
+
+foreach($ingredients as $ingredient){
+    echo nl2br($ingredient->brand.$ingredient->name.$ingredient->price);
+}
 
 $search_return_list = search($_GET["search-query"]);
 ?>
