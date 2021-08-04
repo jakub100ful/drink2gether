@@ -16,7 +16,7 @@ class Ingredient {
     public $unit;
     public $price;
 
-    public function __construct(string $name, int $amount, float $price, string $unit = "ml")
+    public function __construct(string $name, float $amount, float $price, string $unit = "ml")
     {
         $this->name = $name;
         $this->amount = $amount;

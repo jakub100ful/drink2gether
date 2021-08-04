@@ -16,14 +16,27 @@ function search($query) {
     $url .= urlencode($query);
 
     $json = callAPI($url);
-    return $json["drinks"];
+    $ingredients = [];
+    $drinks = $json["drinks"];
+
+    for($i = 0; $i < count($drinks); $i++){
+        for($x = 1; $x < 16; $x++) {
+            if($drinks[$i]['strIngredient' . $x]){
+                $ingredients[] = [$drinks[$i]['strIngredient' . $x], $drinks[$i]['strMeasure' . $x]];
+            }
+    
+            unset($drinks[$i]['strIngredient' . $x]);
+            unset($drinks[$i]['strMeasure' . $x]);
+        }
+    
+        $drinks[$i]['ingredients'] = $ingredients;
+    }
+
+    return $drinks;
 }
 
-// foreach($ingredients as $ingredient){
-//     echo($ingredient->brand.$ingredient->name.$ingredient->price);
-// }
-
 $search_return_list = search($_GET["search-query"]);
+
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +67,7 @@ $search_return_list = search($_GET["search-query"]);
         <?php
             $index = 0;
             foreach ($search_return_list as $drink){
-                $drinkObject = new Drink($drink["strDrink"],[['vodka','50ml'],['peach schnapps','25ml']]);
+                $drinkObject = new Drink($drink["strDrink"],$drink["ingredients"]);
                 $image_url = $drink["strDrinkThumb"];
                 $card_html = "
                 <div class='row justify-content-center align-items-center'>
@@ -67,7 +80,11 @@ $search_return_list = search($_GET["search-query"]);
                         <div class='col-10'>
                             <h5 class='card-title'>".$drink["strDrink"]."</h5>
                             <p class='card-text'><b>Type: </b>".$drink["strAlcoholic"]."</p>
-                            <p>".$drinkObject->ingredientsArray->name."</p>
+                            <p class='card-text'><b>Ingredients: </b></p>
+                            <ul>
+                            <li>".$drinkObject->ingredientsArray[0]->name."</li>
+                            <li>".$drinkObject->ingredientsArray[1]->name."</li>
+                            </ul>
                             <p>Price per serving: <strong>£".$drinkObject->price."</strong></p>
                             <button id='".$index."' type='button' class='btn-grad mt-2' data-bs-toggle='modal' data-bs-target='#drink-modal'>
                              Add
