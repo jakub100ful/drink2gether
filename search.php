@@ -77,22 +77,34 @@ $search_return_list = search($_GET["search-query"]);
                         <div class='col-2'>
                             <img class='img-responsive w-100 rounded-circle' src='".$image_url."' alt='sans'/>
                         </div>
-                        <div class='col-10'>
-                            <h5 class='card-title'>".$drinkObject->name."</h5>
-                            <p class='card-text'><b>Type: </b>".$drink["strAlcoholic"]."</p>
+                        <div class='col-4'>
+                            <h5 class='card-title m-0'>".$drinkObject->name."</h5>
+                            <span class='badge rounded-pill bg-light text-secondary'>".$drink["strAlcoholic"]."</span>
                             <p class='card-text'><b>Ingredients: </b></p>
                             <ul>
                             <li>".$drinkObject->ingredientsArray[0]->name."</li>
                             <li>".$drinkObject->ingredientsArray[1]->name."</li>
                             </ul>
                             <p>Price per serving: <strong>£".$drinkObject->price."</strong></p>
-                            <button id='".$index."' type='button' class='btn-grad mt-2' data-bs-toggle='modal' data-bs-target='#drink-modal'>
-                             Add
-                            </button>
-                            <button id='save-".$index."' type='button' class='btn-grad mt-2' data-bs-toggle='modal' data-bs-target='#drink-modal'>
-                             Save
-                            </button>
                             </div>
+
+                        <div class='col-6 border-start'>
+                            <h5>Recipe</h5>
+                            <p class='card-text'>".$drink['strInstructions']."</p>
+
+                            <div class='row d-flex justify-content-end'>
+                                <div class='col-6'>
+                                    <button id='".$index."' type='button' class='btn-grad mt-2' data-bs-toggle='modal' data-bs-target='#drink-modal'>
+                                    Add
+                                    </button>
+                                </div>
+                                <div class='col-6'>
+                                <h2>
+                                    <i id='save-".$drink['idDrink']."' class='save-button bi bi-star'></i>
+                                </h2>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -132,6 +144,23 @@ $search_return_list = search($_GET["search-query"]);
     <script>
         let searchReturnList = <?php echo json_encode($search_return_list); ?>;
         let drinkModal = document.getElementById('drink-modal');
+        let elementsArray = document.querySelectorAll('.save-button');
+
+        elementsArray.forEach(function(elem) {
+            elem.addEventListener('mouseover', function() {
+                console.log('Mouse over!');
+                elem.classList.add('bi-star-half');
+                elem.classList.remove('bi-star');
+            });
+        });
+
+        elementsArray.forEach(function(elem) {
+            elem.addEventListener('mouseout', function() {
+                console.log('Mouse out!');
+                elem.classList.add('bi-star');
+                elem.classList.remove('bi-star-half');
+            });
+        });
 
         drinkModal.addEventListener('show.bs.modal', function (event) {
             console.log(searchReturnList);
