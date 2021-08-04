@@ -114,7 +114,7 @@ class Drink {
                 $amount = str_replace("oz","",$ingredient[1]);
                 $unit = "oz";
 
-                // Convert to decimal
+                // Convert to decimal FIX THIS FOR FRACTIONS LIKE 1 1/4
                 $amount = eval("return $amount;"); 
             }
 
