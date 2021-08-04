@@ -19,12 +19,9 @@ function search($query) {
     return $json["drinks"];
 }
 
-$mydrink = new Drink("mydrink", [["vodka","50ml"],["whiskey","25ml"]]);
-$ingredients = $mydrink->getIngredientsArray();
-
-foreach($ingredients as $ingredient){
-    echo nl2br($ingredient->brand.$ingredient->name.$ingredient->price);
-}
+// foreach($ingredients as $ingredient){
+//     echo($ingredient->brand.$ingredient->name.$ingredient->price);
+// }
 
 $search_return_list = search($_GET["search-query"]);
 ?>
@@ -57,6 +54,7 @@ $search_return_list = search($_GET["search-query"]);
         <?php
             $index = 0;
             foreach ($search_return_list as $drink){
+                $drinkObject = new Drink($drink["strDrink"],[['vodka','50ml']]);
                 $image_url = $drink["strDrinkThumb"];
                 $card_html = "
                 <div class='row justify-content-center align-items-center'>
@@ -69,6 +67,8 @@ $search_return_list = search($_GET["search-query"]);
                         <div class='col-10'>
                             <h5 class='card-title'>".$drink["strDrink"]."</h5>
                             <p class='card-text'><b>Type: </b>".$drink["strAlcoholic"]."</p>
+                            <p>".$drinkObject->ingredientsArray->name."</p>
+                            <p>Price per serving: <strong>£".$drinkObject->price."</strong></p>
                             <button id='".$index."' type='button' class='btn-grad mt-2' data-bs-toggle='modal' data-bs-target='#drink-modal'>
                              Add
                             </button>

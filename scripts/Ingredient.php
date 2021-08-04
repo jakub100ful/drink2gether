@@ -1,24 +1,27 @@
 <?php
 
-include_once 'HTMLDom.php';
-
 class Ingredient {
     /**
-     * The product to be price checked
-     *
+     * The name of ingredient
      * @var string
+     * The amount of ingredient
+     * @var int
+     * The unit of the ingredient amount
+     * @var string
+     * The price of ingredient
+     * @var float
      */
-    public $brand;
     public $name;
     public $amount;
     public $unit;
     public $price;
 
-    public function __construct(string $brand, string $name, float $price)
+    public function __construct(string $name, int $amount, float $price, string $unit = "ml")
     {
-        $this->brand = $brand;
         $this->name = $name;
+        $this->amount = $amount;
         $this->price = $price;
+        $this->unit = $unit;
     }
 
 }
