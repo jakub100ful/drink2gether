@@ -34,7 +34,8 @@ class Drink {
         
         foreach($this->ingredients as $ingredient){
             $productList = [];
-            $url = 'https://www.trolley.co.uk/search/?q='.$ingredient[0];
+            $ingredientParsed = preg_replace('/\W+/', '-', strtolower(trim($ingredient[0])));
+            $url = 'https://www.trolley.co.uk/search/?q='.$ingredientParsed;
             $html = file_get_html($url);
     
             foreach($html->find('.product-listing') as $productListing) {

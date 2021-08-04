@@ -54,7 +54,7 @@ $search_return_list = search($_GET["search-query"]);
         <?php
             $index = 0;
             foreach ($search_return_list as $drink){
-                $drinkObject = new Drink($drink["strDrink"],[['vodka','50ml']]);
+                $drinkObject = new Drink($drink["strDrink"],[['vodka','50ml'],['peach schnapps','25ml']]);
                 $image_url = $drink["strDrinkThumb"];
                 $card_html = "
                 <div class='row justify-content-center align-items-center'>
