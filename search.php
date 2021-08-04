@@ -78,7 +78,7 @@ $search_return_list = search($_GET["search-query"]);
                             <img class='img-responsive w-100 rounded-circle' src='".$image_url."' alt='sans'/>
                         </div>
                         <div class='col-10'>
-                            <h5 class='card-title'>".$drink["strDrink"]."</h5>
+                            <h5 class='card-title'>".$drinkObject->name."</h5>
                             <p class='card-text'><b>Type: </b>".$drink["strAlcoholic"]."</p>
                             <p class='card-text'><b>Ingredients: </b></p>
                             <ul>

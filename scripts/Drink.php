@@ -36,37 +36,49 @@ class Drink {
             $productList = [];
             $ingredientParsed = preg_replace('/\W+/', '-', strtolower(trim($ingredient[0])));
             $queriedSize = "70cl";
-            $url = 'https://www.trolley.co.uk/search/?q='.$ingredientParsed.'&size='.$queriedSize;
+            $queriedAmountOfProducts = 5;
+            $queriedStores = "2";
+            $index = 0;
+            $url = 'https://www.trolley.co.uk/search/?q='.$ingredientParsed.'&size='.$queriedSize.'&stores='.$queriedStores;
             $html = file_get_html($url);
     
             foreach($html->find('.product-listing') as $productListing) {
-
-                // IF PRODUCT IS A LIQUID (HAS PRICE PER 100ML)
-                if($productListing->find('a div._price div._per-item', 0)){
-                    $ingredientBrand     = $productListing->find('a div._brand', 0)->plaintext;
-                    $ingredientName    = $productListing->find('a div._name', 0)->plaintext;
-        
-                    $ingredientPricePerItem = $productListing->find('a div._price div._per-item', 0)->plaintext;
-        
-                    preg_match('/\d+\.?\d*/', $ingredientPricePerItem, $matches);
-                    $price = $matches[0];
-                    $ingredientPricePer100m = floatval($price);
-        
-                    // For prices per liter, convert to price per 100m
-                    if(strpos($ingredientPricePer100m, "per ltr")){
-                        $ingredientPricePer100m = (floatval($price))/10;
-                    }
+                if($index < $queriedAmountOfProducts){
+                    // IF PRODUCT IS A LIQUID (HAS PRICE PER 100ML)
+                    if($productListing->find('a div._price div._per-item', 0)){
+                        $ingredientBrand     = $productListing->find('a div._brand', 0)->plaintext;
+                        $ingredientName    = $productListing->find('a div._name', 0)->plaintext;
             
-                    $productList[] = new Product($ingredientName, 100, $ingredientPricePer100m, "ml", $ingredientBrand);
+                        $ingredientPricePerItem = $productListing->find('a div._price div._per-item', 0)->plaintext;
+            
+                        preg_match('/\d+\.?\d*/', $ingredientPricePerItem, $matches);
+                        $price = $matches[0];
+                        $ingredientPricePer100m = floatval($price);
+            
+                        // For prices per liter, convert to price per 100m
+                        if(strpos($ingredientPricePer100m, "per ltr")){
+                            $ingredientPricePer100m = (floatval($price))/10;
+                        }else if (strpos($ingredientPricePer100m, "per 100g")){
+                            break;
+                        }
+                
+                        $productList[] = new Product($ingredientName, 100, $ingredientPricePer100m, "ml", $ingredientBrand);
+                    }
+                    $index++;
+                }else{
+                    $index++;
+                    break;
                 }
+                
+
             }
+
+            usort($productList, function ($item1, $item2) {
+                return $item1->price <=> $item2->price;
+            });
+    
+            $this->productsArray[] = $productList;
         }
-
-        usort($productList, function ($item1, $item2) {
-            return $item1->price <=> $item2->price;
-        });
-
-        $this->productsArray = $productList;
     }
 
 
@@ -103,13 +115,11 @@ class Drink {
                 $unit = "oz";
 
                 // Convert to decimal
-                $amount = explode("/",$amount);
-                $amount = round($amount[0]/$amount[1],6);
+                $amount = eval("return $amount;"); 
             }
 
-            echo("Amount: ".$amount);
-
-            $price = $this->productsArray[$index]->price;
+            // NEED ANOTHER INDEX AFTER [$index] TO ACCESS THE N-TH PRODUCT OF THAT INGREDIENT
+            $price = $this->productsArray[$index][0]->price;
             $pricePerIngredient = ($price/100)*$amount;
 
             $ingredientList[] = new Ingredient($name, $amount, $pricePerIngredient, $unit);
@@ -134,10 +144,14 @@ class Drink {
         $price = 0.0;
 
         foreach($this->ingredientsArray as $ingredient){
-            $price += $ingredient->price;
+            if($ingredient->unit == "ml"){
+                $price += $ingredient->price*$ingredient->amount;
+            }else{
+                $price += $ingredient->price*($ingredient->amount*28.41);
+            }
         }
 
-        $this->price = $price;
+        $this->price = round($price,2);
     }
 
     public function getPrice() :int
