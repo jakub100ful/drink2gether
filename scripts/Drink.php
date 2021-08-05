@@ -113,9 +113,15 @@ class Drink {
             }else if(strpos($ingredient[1],"oz")){
                 $amount = str_replace("oz","",$ingredient[1]);
                 $unit = "oz";
+                $amount = eval("return $amount;"); 
 
                 // Convert to decimal FIX THIS FOR FRACTIONS LIKE 1 1/4
-                $amount = eval("return $amount;"); 
+                // if(strpos($amount, " ",-1)){
+                //     $amountExploded = explode(" ", $amount);
+
+                //     $amount = eval("return $amountExploded[1];"); 
+                //     $amount += $amountExploded[0];
+                // }
             }
 
             // NEED ANOTHER INDEX AFTER [$index] TO ACCESS THE N-TH PRODUCT OF THAT INGREDIENT

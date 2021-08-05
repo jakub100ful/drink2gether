@@ -69,6 +69,12 @@ $search_return_list = search($_GET["search-query"]);
             foreach ($search_return_list as $drink){
                 $drinkObject = new Drink($drink["strDrink"],$drink["ingredients"]);
                 $image_url = $drink["strDrinkThumb"];
+                $ingredient_html = "";
+
+                foreach ($drinkObject->ingredientsArray as $ingredient){
+                    $ingredient_html .= "<li>".$ingredient->name."</li>";
+                }
+
                 $card_html = "
                 <div class='row justify-content-center align-items-center'>
                     <div class='col-sm-6 mb-3'>
@@ -79,30 +85,25 @@ $search_return_list = search($_GET["search-query"]);
                         </div>
                         <div class='col-4'>
                             <h5 class='card-title m-0'>".$drinkObject->name."</h5>
-                            <span class='badge rounded-pill bg-light text-secondary'>".$drink["strAlcoholic"]."</span>
-                            <p class='card-text'><b>Ingredients: </b></p>
-                            <ul>
-                            <li>".$drinkObject->ingredientsArray[0]->name."</li>
-                            <li>".$drinkObject->ingredientsArray[1]->name."</li>
+                            <span class='mt-1 badge rounded-pill bg-light text-secondary'>".$drink["strAlcoholic"]."</span>
+                            <p class='card-text mb-1 mt-2'><b>Ingredients: </b></p>
+                            <ul>".$ingredient_html."
                             </ul>
-                            <p>Price per serving: <strong>£".$drinkObject->price."</strong></p>
                             </div>
 
                         <div class='col-6 border-start'>
                             <h5>Recipe</h5>
                             <p class='card-text'>".$drink['strInstructions']."</p>
 
-                            <div class='row d-flex justify-content-end'>
-                                <div class='col-6'>
-                                    <button id='".$index."' type='button' class='btn-grad mt-2' data-bs-toggle='modal' data-bs-target='#drink-modal'>
+                            <p class='mb-1'><strong>Price per serving: </strong></p><h4><span class='badge border border-light text-light'>£".$drinkObject->price."</span></h4>
+
+                            <div class='row'>
+                                    <button id='".$index."' type='button' class='btn-grad mt-2 col-5' data-bs-toggle='modal' data-bs-target='#drink-modal'>
                                     Add
                                     </button>
-                                </div>
-                                <div class='col-6'>
-                                <h2>
-                                    <i id='save-".$drink['idDrink']."' class='save-button bi bi-star'></i>
-                                </h2>
-                                </div>
+                                    <h2 class='m-0 ms-1 col-2 d-flex align-items-center justify-content-start'>
+                                        <i id='save-".$drink['idDrink']."' class='save-button bi bi-star'></i>
+                                    </h2>
                             </div>
                         </div>
                         </div>
@@ -147,18 +148,15 @@ $search_return_list = search($_GET["search-query"]);
         let elementsArray = document.querySelectorAll('.save-button');
 
         elementsArray.forEach(function(elem) {
-            elem.addEventListener('mouseover', function() {
-                console.log('Mouse over!');
-                elem.classList.add('bi-star-half');
-                elem.classList.remove('bi-star');
-            });
-        });
-
-        elementsArray.forEach(function(elem) {
-            elem.addEventListener('mouseout', function() {
-                console.log('Mouse out!');
-                elem.classList.add('bi-star');
-                elem.classList.remove('bi-star-half');
+            elem.addEventListener('click', function() {
+                console.log(elem.classList);
+                if(elem.classList.contains('bi-star-fill')){
+                    elem.classList.add('bi-star');
+                    elem.classList.remove('bi-star-fill');
+                }else if(elem.classList.contains('bi-star')){
+                    elem.classList.add('bi-star-fill');
+                    elem.classList.remove('bi-star');
+                }
             });
         });
 
