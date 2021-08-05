@@ -170,15 +170,6 @@ class Drink {
         }
     }
 
-    // GETS THE DRINK PROPERTIES
-    public function getDrinkSummary() :void
-    {
-        print_r($this->name);
-        print_r($this->ingredientsArray);
-        print_r($this->price);
-        print_r($this->recipe);
-    }
-
     // TODO: GET TOTAL AMOUNT OF SERVINGS PER INGREDIENT SET
 
 }

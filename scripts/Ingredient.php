@@ -24,4 +24,26 @@ class Ingredient {
         $this->unit = $unit;
     }
 
+    // GETS THE DRINK PROPERTIES
+    public function classifyUnit($measurementString) :void
+    {
+        $measurementList = explode(" ", strtolower($measurementString));
+
+        if(in_array($measurementList,"ml")){
+            $this->unit = "ml";
+        }else if(in_array($measurementList,"oz")){
+            $this->unit = "oz";
+        }else if(in_array($measurementList,"cup") || in_array($measurementList,"cups")){
+            $this->unit = "cup";
+        }else if(in_array($measurementList,"tsp") || in_array($measurementList,"teaspoons")){
+            $this->unit = "tsp";
+        }else if(in_array($measurementList,"tblsp") || in_array($measurementList,"tablespoons")){
+            $this->unit = "tblsp";
+        }else{
+            $this->unit = "other";
+        }
+
+
+    }
+
 }
